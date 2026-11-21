@@ -1,5 +1,8 @@
 import socket
 
+#global service dictionary
+service = {21: "FTP", 22: "SSH", 23: "Telnet", 25: "SMTP", 53: "DNS", 80: "HTTP", 110: "POP3", 143: "IMAP", 443: "HTTPS", 3389: "RDP"}
+
 #A function that scan the given port on that specific address and check weather it is open.
 def scan_port(host, port):
     #AF_INET = uses IPv4 addresses
@@ -23,8 +26,10 @@ def scan_range(host, start, end):
 
     for i in range(start,end+1):
         result = scan_port(host,i)
+
         if result == "Open":
-            open_list.append(i)
+            check = service.get(i,"unknown")
+            open_list.append((i,check))
 
     return open_list
 
