@@ -33,4 +33,20 @@ def scan_range(host, start, end):
 
     return open_list
 
-print(scan_range("127.0.0.1",8000,8000))
+#A function that print out the result into more cleaner and more readable text.
+def print_result(host, start, end, open_list):
+    print(f"Scanning {host} (port {start}-{end})...\n")
+
+    if open_list:
+        print("PORT\tSTATE\tSERVICE")
+        for port, svc in open_list:
+            print(f"{port}\tOpen\t{svc}")
+        
+        print(f"Scan complete: {len(open_list)} open port(s) found.")
+    else:
+        print("No open port found.")
+
+host, start, end = "127.0.0.1", 1, 8000
+
+print(scan_range(host,start,end))
+print_result(host, start, end, scan_range(host, start, end))
