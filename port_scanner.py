@@ -1,4 +1,5 @@
 import socket
+from concurrent.futures import ThreadPoolExecutor
 
 #global service dictionary
 service = {21: "FTP", 22: "SSH", 23: "Telnet", 25: "SMTP", 53: "DNS", 80: "HTTP", 110: "POP3", 143: "IMAP", 443: "HTTPS", 3389: "RDP"}
@@ -46,7 +47,28 @@ def print_result(host, start, end, open_list):
     else:
         print("No open port found.")
 
-host, start, end = "127.0.0.1", 1, 8000
+#A function that package one port's work into a tiny "job" function.
+def scan_one(host, port):
+    if scan_port(host,port) == "Open":
+        return (port, service.get(port, "unknown"))
 
-print(scan_range(host,start,end))
-print_result(host, start, end, scan_range(host, start, end))
+def scan_range(host, start, end):
+    open_list = []
+
+    with ThreadPoolExecutor(max_workers=100) as executor:
+        #hand one job per port to the pool.
+        futures = [executor.submit(scan_one, host, port) for port in range(start, end+1)]
+
+        #collect the answers, keep the open ones
+        for f in futures:
+            result = f.result()
+            if result is not None:
+                open_list.append(result)
+
+    return open_list
+
+host, start, end = "127.0.0.1", 1, 9000
+
+# print(scan_range(host,start,end))
+# print_result(host, start, end, scan_range(host, start, end))
+print(scan_range(host, start, end))
