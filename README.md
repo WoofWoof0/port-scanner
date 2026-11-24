@@ -9,8 +9,8 @@ It first check for open TCP port within the given range of the given host, and t
 
 ## EXAMPLE
 
-'''
-python port_scanner.py 127.0.0.1 4999 7001
+```
+$ python port_scanner.py 127.0.0.1 4999 7001
 
 Scanning 127.0.0.1 (port 4999-7001)...
 
@@ -19,7 +19,7 @@ PORT    STATE   SERVICE
 7000    Open    unknown
 
 Scan complete: 2 open port(s) found.
-'''
+```
 
 ## FEATURES
 
@@ -47,14 +47,14 @@ Scan complete: 2 open port(s) found.
 requiremnet(s):
 -   Python 3 (Standard)
 
-'''
-python port_scanner.py <host> <start_port> <end_port>
-'''
+```
+$ python port_scanner.py <host> <start_port> <end_port>
+```
 
 example:
-'''
-python port_scanner.py 127.0.0.1 4999 7001
-'''
+```
+$ python port_scanner.py 127.0.0.1 4999 7001
+```
 
 ## WHAT I LEARNED
 
