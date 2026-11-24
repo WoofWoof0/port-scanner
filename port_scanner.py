@@ -1,4 +1,5 @@
 import socket
+import argparse
 from concurrent.futures import ThreadPoolExecutor
 
 #global service dictionary
@@ -43,7 +44,7 @@ def print_result(host, start, end, open_list):
         for port, svc in open_list:
             print(f"{port}\tOpen\t{svc}")
         
-        print(f"Scan complete: {len(open_list)} open port(s) found.")
+        print(f"\nScan complete: {len(open_list)} open port(s) found.")
     else:
         print("No open port found.")
 
@@ -71,4 +72,13 @@ host, start, end = "127.0.0.1", 1, 9000
 
 # print(scan_range(host,start,end))
 # print_result(host, start, end, scan_range(host, start, end))
-print(scan_range(host, start, end))
+# print(scan_range(host, start, end))
+
+parser = argparse.ArgumentParser(description="A Simple TCP port scanner.")
+parser.add_argument("host", help="Host or IP to scan.")
+parser.add_argument("start", type=int, help="Start port")
+parser.add_argument("end", type=int, help="End port")
+args = parser.parse_args()
+
+results = scan_range(args.host, args.start, args.end)
+print_result(args.host, args.start, args.end, results)
